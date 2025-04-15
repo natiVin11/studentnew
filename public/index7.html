@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>הוספת רעיונות חדשים</title>
+  <link rel="stylesheet" href="css/index7.css">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>הוספת רעיונות חדשים</h1>
+  </header>
+
+  <section id="idea-form">
+    <h2>הוסף רעיון חדש</h2>
+    <form id="new-idea-form">
+      <label for="idea-title">כותרת רעיון:</label>
+      <input type="text" id="idea-title" required placeholder="הכנס כותרת רעיון">
+
+      <label for="idea-description">תיאור רעיון:</label>
+      <textarea id="idea-description" required placeholder="הכנס תיאור רעיון"></textarea>
+
+      <button type="submit">הוסף רעיון</button>
+    </form>
+  </section>
+
+  <section id="idea-list">
+    <h2>רעיונות קיימים</h2>
+    <div id="ideas-container"></div>
+  </section>
+</div>
+
+<script src="js/index7.js"></script>
+</body>
+</html>

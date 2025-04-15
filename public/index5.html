@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מחולל סיסמאות אוטומטיות</title>
+  <link rel="stylesheet" href="css/index5.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <div class="nav-bar">
+    <button onclick="window.location.href='index.html'">בית</button>
+    <button onclick="window.location.href='index2.html'">תקלות נפוצות ממסמכים </button>
+    <button onclick="window.location.href='https://brzvmtraining.barzi.health.gov.il/youtube/index.php'">סרטונים ללמידה</button>
+    <button onclick="window.location.href='about.html'">קישור להעלאת סרטונים</button>
+    <button onclick="window.location.href='index3.html'">לומדות</button>
+    <button onclick="window.location.href='index4.html'">צ'ק ליסט לתקלות לפני פנייה לכונן</button>
+    <button onclick="window.location.href='index5.html'">איפוס סיסמא</button>
+    <button onclick="window.location.href='index6.html'">שאלות ותשובות</button>
+  </div>
+  <div class="container">
+  <h2>איפוס סיסמה</h2>
+  <label for="username">שם משתמש:</label>
+  <input type="text" id="username" placeholder="הכנס שם משתמש">
+  <br><br>
+  <button onclick="generatePassword()">צור סיסמה אוטומטית</button>
+  <p>הסיסמה החדשה שלך היא:</p>
+  <p id="password"></p>
+</div>
+
+<script>
+  function generatePassword() {
+    const username = document.getElementById('username').value;
+
+    // בדיקת אם שם המשתמש לא הוזן
+    if (!username.trim()) {
+      document.getElementById('password').innerText = "נא להכניס שם משתמש!";
+      return;
+    }
+
+    const length = 10; // אורך הסיסמה שנקבע מראש
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?/"; // תוויה שיכולות להיכלל בסיסמה
+
+    let password = "";
+    for (let i = 0; i < length; i++) {
+      password += chars[Math.floor(Math.random() * chars.length)];
+    }
+
+    document.getElementById('password').innerText = password;
+  }
+</script>
+</body>
+</html>

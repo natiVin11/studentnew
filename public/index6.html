@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>שאלות ותשובות</title>
+  <style>
+    body {
+      font-family: "Heebo", sans-serif;
+      direction: rtl;
+      text-align: right;
+      background: linear-gradient(to right, #f6d365, #fda085);
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin-top: 20px;
+    }
+    .nav-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .nav-bar button, button {
+      background-color: #ff9800;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s, transform 0.2s;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #e68900;
+      transform: scale(1.05);
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 100%;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .question {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background: #fff3e0;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .error-message {
+      color: red;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .success-message {
+      color: green;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .loading {
+      display: none;
+      text-align: center;
+      font-weight: bold;
+      color: #ff9800;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="nav-bar">
+    <button onclick="window.location.href='index.html'">בית</button>
+    <button onclick="window.location.href='index2.html'">בעיות נפוצות</button>
+    <button onclick="window.location.href='index6.html'">שאלות ותשובות</button>
+  </div>
+  <h2>שאלות ותשובות</h2>
+  <label>הכנס שם:</label>
+  <input type="text" id="username" required>
+  <button onclick="startQuiz()">התחל</button>
+  <div id="quiz" style="display: none;"></div>
+  <button id="submit" onclick="submitQuiz()" style="display: none;">שלח תשובות</button>
+  <div id="loading" class="loading">מעבד נתונים...</div>
+  <div id="message"></div>
+</div>
+<script>
+  let questions = [];
+  let username = "";
+
+  async function loadQuestions() {
+    try {
+      const response = await fetch('data/questions.json');
+      if (!response.ok) throw new Error('שגיאה בטעינת השאלות');
+      questions = await response.json();
+    } catch (error) {
+      showMessage('שגיאה בטעינת השאלות, ודא שהקובץ קיים', 'error');
+    }
+  }
+
+  function showMessage(text, type) {
+    const messageDiv = document.getElementById('message');
+    messageDiv.className = type === 'error' ? 'error-message' : 'success-message';
+    messageDiv.textContent = text;
+  }
+
+  async function startQuiz() {
+    username = document.getElementById("username").value.trim();
+    if (!username) {
+      showMessage("אנא הכנס שם", 'error');
+      return;
+    }
+
+    document.getElementById("loading").style.display = "block";
+    await loadQuestions();
+    document.getElementById("loading").style.display = "none";
+
+    if (questions.length === 0) {
+      showMessage("לא נמצאו שאלות", 'error');
+      return;
+    }
+
+    document.getElementById("quiz").style.display = "block";
+    document.getElementById("submit").style.display = "block";
+    document.getElementById("message").textContent = "";
+    displayQuestions();
+  }
+
+  function displayQuestions() {
+    const quizDiv = document.getElementById("quiz");
+    quizDiv.innerHTML = "";
+    questions.forEach((q, index) => {
+      let optionsHTML = q.options.map(opt =>
+              `<div>
+          <input type='radio' name='q${index}' value='${opt}' id='q${index}${opt}'>
+          <label for='q${index}${opt}'>${opt}</label>
+         </div>`
+      ).join('');
+      quizDiv.innerHTML += `
+        <div class='question'>
+          <p><strong>שאלה ${index + 1}:</strong> ${q.question}</p>
+          ${optionsHTML}
+        </div>`;
+    });
+  }
+
+  function submitQuiz() {
+    showMessage("התשובות נשמרו בהצלחה!", 'success');
+  }
+</script>
+</body>
+</html>
